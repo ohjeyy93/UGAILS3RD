@@ -2,6 +2,8 @@
 from sklearn.linear_model import LogisticRegression
 #from sklearn.datasets import load_iris
 import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 #X, y = load_iris(return_X_y=True)
 #print(y)
 #print(X)
@@ -111,4 +113,13 @@ for x in range(len(list_chrom)):
 #print(data_truth)
 #print(new_data)
 clf = LogisticRegression(random_state=0).fit(new_data, data_truth.values.ravel())
+print("LogisticRegression")
 print(clf.score(new_data, data_truth.values.ravel()))
+neigh = KNeighborsClassifier(n_neighbors=9)
+neigh.fit(new_data, data_truth.values.ravel())
+print("KNeighborsClassifier")
+print(neigh.score(new_data, data_truth.values.ravel()))
+clf2 = RandomForestClassifier(max_depth=2, random_state=0)
+clf2.fit(new_data, data_truth.values.ravel())
+print("RandomForestClassifier")
+print(clf2.score(new_data, data_truth.values.ravel()))
