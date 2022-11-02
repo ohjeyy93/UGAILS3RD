@@ -111,4 +111,4 @@ for x in range(len(list_chrom)):
 #print(data_truth)
 #print(new_data)
 clf = LogisticRegression(random_state=0).fit(new_data, data_truth.values.ravel())
-print(clf.score(new_data, data_truth.values.ravel))
+print(clf.score(new_data, data_truth.values.ravel()))
