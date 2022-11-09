@@ -7,6 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold
+import numpy as np
 
 #X, y = load_iris(return_X_y=True)
 #print(y)
@@ -87,6 +88,8 @@ x=0
 for item in list_status:
     if item not in dict_status:
         dict_status[item]=x
+        print(item)
+        print(x)
         x+=1
 
 list_status2=[]
@@ -120,8 +123,15 @@ skf = StratifiedKFold(n_splits=5)
 skf.get_n_splits(new_data, list_status2)
 
 target_names=[]
+dict_status2={}
 for item in list_status2:
+    dict_status2[item]=0
+for item in dict_status2:
     target_names+=[item]
+#print(target_names)
+
+new_data=np.array(new_data)
+list_status2=np.array(list_status2)
 
 for train_index, test_index in skf.split(new_data, list_status2):
     from sklearn.pipeline import make_pipeline
@@ -133,22 +143,22 @@ for train_index, test_index in skf.split(new_data, list_status2):
     #clf.predict(new_data_train2)
     print(clf3.score(new_data[test_index], list_status2[test_index]))
     #target_names = ['class 0', 'class 1', 'class 2']
-    print(classification_report(list_status2[test_index], clf3.predict(new_data[test_index]), target_names=target_names))
+    print(classification_report(list_status2[test_index], clf3.predict(new_data[test_index]), labels=target_names))
     print("GaussianNB")
     NB = GaussianNB().fit(new_data[train_index], list_status2[train_index])
     print(NB.score(new_data[test_index], list_status2[test_index]))
-    print(classification_report(list_status2[test_index], NB.predict(new_data[test_index]), target_names=target_names))
+    print(classification_report(list_status2[test_index], NB.predict(new_data[test_index]), labels=target_names))
     print("LogisticRegression")
     clf = LogisticRegression(random_state=0).fit(new_data[train_index], list_status2[train_index])
     print(clf.score(new_data[test_index], list_status2[test_index]))
-    print(classification_report(list_status2[test_index], clf.predict(new_data[test_index]), target_names=target_names))
+    print(classification_report(list_status2[test_index], clf.predict(new_data[test_index]), labels=target_names))
     print("KNeighborsClassifier")
     neigh = KNeighborsClassifier(n_neighbors=9)
     neigh.fit(new_data[train_index], list_status2[train_index])
     print(neigh.score(new_data[test_index], list_status2[test_index]))
-    print(classification_report(list_status2[test_index], neigh.predict(new_data[test_index]), target_names=target_names))
+    print(classification_report(list_status2[test_index], neigh.predict(new_data[test_index]), labels=target_names))
     clf2 = RandomForestClassifier(max_depth=2, random_state=0)
     print("RandomForestClassifier")
     clf2.fit(new_data[train_index], list_status2[train_index])
     print(clf2.score(new_data[test_index], list_status2[test_index]))
-    print(classification_report(list_status2[test_index], clf2.predict(new_data[test_index]), target_names=target_names))
+    print(classification_report(list_status2[test_index], clf2.predict(new_data[test_index]), labels=target_names))
